@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Registration Form</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<style>
+		.container {
+			margin-top: 60px;
+		}
+
+		.form-group {
+			margin-bottom: 20px;
+		}
+
+		.btn-primary {
+			border-radius: 20px;
+		}
+
+		
+
+		.navbar {
+			position: fixed;
+			width: 100%;
+			top: 0;
+			z-index: 1000;
+		}
+
+		.navbar-brand img {
+			height: 40px;
+			margin-right: 10px;
+		}
+
+		.alert-danger {
+			border-radius: 20px;
+		}
+	</style>
+</head>
+
+<body>
+
+	<!-- Navigation Bar -->
+	<nav class="navbar navbar-expand-lg navbar-dark bg-light fixed-top">
+		<img th:src="@{/images/logo.png}" src="../static/images/logo.png" width="auto" height="40"
+			class="d-inline-block align-top" alt="" />
+		Online Book Store
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+			aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNav">
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item active">
+					<a class="nav-link" href="#">Home</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#">Books</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#">About</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#">Contact</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#">Cart</a>
+				</li>
+				<!-- Add more navigation items as needed -->
+			</ul>
+		</div>
+	</nav>
+
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-md-6">
+				<div class="card">
+					<div class="card-body">
+						<h2 class="card-title text-center mb-4">Registration Form</h2>
+						<form id="registrationForm" th:action="@{/registration}" th:object="${user}" method="post"
+							role="form">
+							<!-- Error message -->
+							<div th:if="${errorMessage}" id="errorMessage" class="alert alert-danger text-center"
+								role="alert">
+								<p th:text="${errorMessage}"></p>
+							</div>
+
+							<div class="form-group">
+								<label for="username">Username:</label>
+								<input type="text" th:field="*{username}" class="form-control" id="username"
+									placeholder="Enter username">
+								<div th:if="${#fields.hasErrors('username')}" th:errors="*{username}"
+									class="text-danger"></div>
+							</div>
+
+							<div class="form-group">
+								<label for="firstName">First Name:</label>
+								<input type="text" th:field="*{firstName}" class="form-control" id="firstName"
+									placeholder="Enter first name">
+								<div th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"
+									class="text-danger"></div>
+							</div>
+
+							<div class="form-group">
+								<label for="lastName">Last Name:</label>
+								<input type="text" th:field="*{lastName}" class="form-control" id="lastName"
+									placeholder="Enter last name">
+								<div th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"
+									class="text-danger"></div>
+							</div>
+
+							<div class="form-group">
+								<label for="email">Email:</label>
+								<input type="email" th:field="*{email}" class="form-control" id="email"
+									placeholder="Enter email">
+								<div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger">
+								</div>
+								<!-- Display error message for duplicate email -->
+								<div th:if="${errorMessage == 'This email is already registered.'}" class="text-danger">
+									This email is already registered.</div>
+							</div>
+
+							<div class="form-group">
+								<label for="password">Password:</label>
+								<input type="password" th:field="*{password}" class="form-control" id="password"
+									placeholder="Enter password">
+								<div th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
+									class="text-danger"></div>
+							</div>
+
+							<div class="form-group">
+								<label for="role">Role:</label>
+								<select th:field="*{role}" class="form-control" id="role">
+									<option value="USER">User</option>
+									<option value="ADMIN">Admin</option>
+								</select>
+								<div th:if="${#fields.hasErrors('role')}" th:errors="*{role}" class="text-danger"></div>
+							</div>
+
+							<button type="submit" class="btn btn-primary btn-block">Register</button>
+						</form>
+						<p class="small fw-bold mt-2 pt-1 mb-0 text-center">Already have an account <a href="/login"
+								class="link-danger">Login</a></p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<footer>
+
+		<div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+			© 2020 Copyright:
+		</div>
+	</footer>
+
+	<!-- Bootstrap JS and dependencies -->
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+    <script>
+        window.onload = function () {
+            // Hide error message after 10 seconds
+            var errorMessage = document.getElementById('errorMessage');
+            if (errorMessage) {
+                setTimeout(function () {
+                    errorMessage.style.display = 'none';
+                }, 10000); // Display error message for 10 seconds
+            }
+        };
+
+        if (performance.navigation.type === 1) {
+            window.location.href = "/registration";
+        }
+    </script>
+
+</body>
+
+</html>

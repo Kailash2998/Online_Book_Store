@@ -1,0 +1,486 @@
+<!--<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Users</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+		integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+		integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+	<style>
+		.card {
+			height: 500%;
+			width: 80%;
+			margin-top: 55px;
+			margin-left: 200px;
+		}
+
+		.search-box {
+			margin-bottom: 20px;
+		}
+	</style>
+</head>
+
+<body>
+
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="#">
+				<img th:src="@{/images/logo.png}" src="../static/images/logo.png" width="auto" height="40"
+					class="d-inline-block align-top" alt="" />
+				Online Book Store
+			</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+				aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav mr-auto"></ul>
+				<ul class="navbar-nav">
+					<li class="nav-item active">
+						<a class="nav-link" th:href="@{/admin-page}" href="#">admin-home</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" th:href="@{/logout}" href="#"><i class="fas fa-sign-out-alt"></i>
+							Logout</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<div class="card">
+		<div class="container mt-1">
+			<div class="row">
+				<div class="col">
+					<div class="form-group search-box">
+						<input type="text" id="searchInput" class="form-control" placeholder="Search...">
+					</div>
+				</div>
+			</div>
+			<h2>Users</h2>
+			<div class="row">
+				<div class="col">
+					<p>Total Users: <span th:text="${usersPage.getTotalElements()}"></span></p>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<table class="table">
+						<thead class="table-active">
+							<tr>
+								<th>User ID</th>
+								<th>First Name</th>
+								<th>Last Name</th>
+								<th>Username</th>
+								<th>Email</th>
+								<th>Role</th>
+								<th>Edit</th>
+								<th>Delete</th>
+							</tr>
+						</thead>
+						<tbody>
+							 Iterate over each user 
+							<tr th:each="user : ${usersPage.content}">
+								<td th:text="${user.id}"></td>
+								<td th:text="${user.firstName}"></td>
+								<td th:text="${user.lastName}"></td>
+								<td th:text="${user.username}"></td>
+								<td th:text="${user.email}"></td>
+								<td th:text="${user.role}"></td>
+								<td>
+									<a th:href="@{'/admin-page/edit-user/' + ${user.id}}"
+										class="btn btn-warning">Edit</a>
+								</td>
+
+								<td>
+									<a th:href="@{'/admin-page/users/delete/' + ${user.id}}"
+										class="btn btn-danger">Delete</a>
+								</td>
+
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	 Pagination 
+	<div class="row mt-2">
+		<div class="col-md-12">
+			<ul class="pagination justify-content-center">
+				<li th:class="${usersPage.first ? 'page-item disabled' : 'page-item'}">
+					<a th:href="@{/admin-page/userlist(page=0, size=${usersPage.size})}" class="page-link">First</a>
+				</li>
+				<li th:class="${usersPage.first ? 'page-item disabled' : 'page-item'}">
+					<a th:href="@{/admin-page/userlist(page=${usersPage.number - 1}, size=${usersPage.size})}"
+						class="page-link">Previous</a>
+				</li>
+				 Iterate over page numbers 
+				<th:block th:each="pageNumber : ${#numbers.sequence(0, usersPage.totalPages - 1)}">
+					<li th:class="${pageNumber == usersPage.number ? 'page-item active' : 'page-item'}">
+						<a th:href="@{/admin-page/userlist(page=${pageNumber}, size=${usersPage.size})}"
+							class="page-link" th:text="${pageNumber + 1}"></a>
+					</li>
+				</th:block>
+				 End iterate over page numbers 
+				<li th:class="${usersPage.last ? 'page-item disabled' : 'page-item'}">
+					<a th:href="@{/admin-page/userlist(page=${usersPage.number + 1}, size=${usersPage.size})}"
+						class="page-link">Next</a>
+				</li>
+				<li th:class="${usersPage.last ? 'page-item disabled' : 'page-item'}">
+					<a th:href="@{/admin-page/userlist(page=${usersPage.totalPages - 1}, size=${usersPage.size})}"
+						class="page-link">Last</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+	 Back Button 
+	<div class="row mt-2">
+		<div class="col-md-12">
+			<button onclick="goBack()" class="btn btn-secondary">Go Back</button>
+			<script>
+				function goBack() {
+					window.history.back();
+				}
+			</script>
+		</div>
+	</div>
+	 End Back Button 
+
+	<footer style="background-color: #eee6d3;">
+		<div class="container p-4 mt-4">
+			<div class="row">
+				<div class="col-lg-6 col-md-16 mb-4">
+					<h5 class="mb-3 text-dark">footer content</h5>
+					<p>
+						Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste atque ea quis
+						molestias. Fugiat pariatur maxime quis culpa corporis vitae repudiandae aliquam
+						voluptatem veniam, est atque cumque eum delectus sint!
+					</p>
+				</div>
+				<div class="col-lg-3 col-md-6 mb-4">
+					<h5 class="mb-3 text-dark">links</h5>
+					<ul class="list-unstyled mb-0">
+						<li class="mb-1">
+							<a href="#!" style="color: #4f4f4f;">FAQ</a>
+						</li>
+						<li class="mb-1">
+							<a href="#!" style="color: #4f4f4f;">Classes</a>
+						</li>
+						<li class="mb-1">
+							<a href="#!" style="color: #4f4f4f;">Pricing</a>
+						</li>
+						<li>
+							<a href="#!" style="color: #4f4f4f;">Safety</a>
+						</li>
+					</ul>
+				</div>
+				<div class="col-lg-3 col-md-6 mb-4">
+					<h5 class="mb-1 text-dark">opening hours</h5>
+					<table class="table" style="border-color: #666;">
+						<tbody>
+							<tr>
+								<td>Mon - Fri:</td>
+								<td>8am - 9pm</td>
+							</tr>
+							<tr>
+								<td>Sat - Sun:</td>
+								<td>8am - 1am</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+			© 2020 Copyright:
+			<a class="text-dark" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+		</div>
+		 Copyright 
+	</footer>
+
+	<script>
+		function confirmDelete(userId) {
+			if (confirm("Are you sure you want to delete this user?")) {
+				window.location.href = '/admin-page/users/delete/' + userId;
+			}
+		}
+
+		// Add event listener to the search input
+		document.getElementById('searchInput').addEventListener('input', function () {
+			const searchText = this.value.toLowerCase();
+			const rows = document.querySelectorAll('#userTableBody tr');
+
+			rows.forEach(row => {
+				let shouldHide = true;
+				// Get the username cell content
+				const usernameCell = row.querySelector('td:nth-child(4)');
+				if (usernameCell) {
+					const usernameText = usernameCell.textContent.toLowerCase();
+					// Check if the username contains the search text
+					if (usernameText.includes(searchText)) {
+						shouldHide = false;
+					}
+				}
+
+				if (shouldHide) {
+					row.style.display = 'none';
+				} else {
+					row.style.display = '';
+				}
+			});
+		});
+	</script>
+
+
+
+</body>
+
+</html>-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Users</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+		integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+		integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+	<style>
+		.card {
+			height: 500%;
+			width: 80%;
+			margin-top: 55px;
+			margin-left: 200px;
+		}
+
+		.search-box {
+			margin-bottom: 20px;
+		}
+	</style>
+</head>
+
+<body>
+
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="#">
+				<img th:src="@{/images/logo.png}" src="../static/images/logo.png" width="auto" height="40"
+					class="d-inline-block align-top" alt="" />
+				Online Book Store
+			</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+				aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav mr-auto"></ul>
+				<ul class="navbar-nav">
+					<li class="nav-item active">
+						<a class="nav-link" th:href="@{/admin-page}" href="#">admin-home</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" th:href="@{/logout}" href="#"><i class="fas fa-sign-out-alt"></i>
+							Logout</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<div class="card">
+		<div class="container mt-1">
+			<div class="row">
+				<div class="col">
+					<div class="form-group search-box">
+						<input type="text" id="searchInput" class="form-control" placeholder="Search...">
+					</div>
+				</div>
+			</div>
+			<h2>Users</h2>
+			<div class="row">
+				<div class="col">
+					<p>Total Users: <span th:text="${usersPage.getTotalElements()}"></span></p>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<table class="table">
+						<thead class="table-active">
+							<tr>
+								<th>User ID</th>
+								<th>First Name</th>
+								<th>Last Name</th>
+								<th>Username</th>
+								<th>Email</th>
+								<th>Role</th>
+								<th>Edit</th>
+								<th>Delete</th>
+							</tr>
+						</thead>
+						<tbody id="userTableBody">
+							<!-- Iterate over each user -->
+							<tr th:each="user : ${usersPage.content}">
+								<td th:text="${user.id}"></td>
+								<td th:text="${user.firstName}"></td>
+								<td th:text="${user.lastName}"></td>
+								<td th:text="${user.username}"></td>
+								<td th:text="${user.email}"></td>
+								<td th:text="${user.role}"></td>
+								<td>
+									<a th:href="@{'/admin-page/edit-user/' + ${user.id}}"
+										class="btn btn-warning">Edit</a>
+								</td>
+
+								<td>
+									<a th:href="@{'/admin-page/users/delete/' + ${user.id}}"
+										class="btn btn-danger">Delete</a>
+								</td>
+
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Pagination -->
+	<div class="row mt-2">
+		<div class="col-md-12">
+			<ul class="pagination justify-content-center">
+				<li th:class="${usersPage.first ? 'page-item disabled' : 'page-item'}">
+					<a th:href="@{/admin-page/userlist(page=0, size=${usersPage.size})}" class="page-link">First</a>
+				</li>
+				<li th:class="${usersPage.first ? 'page-item disabled' : 'page-item'}">
+					<a th:href="@{/admin-page/userlist(page=${usersPage.number - 1}, size=${usersPage.size})}"
+						class="page-link">Previous</a>
+				</li>
+				<!-- Iterate over page numbers -->
+				<th:block th:each="pageNumber : ${#numbers.sequence(0, usersPage.totalPages - 1)}">
+					<li th:class="${pageNumber == usersPage.number ? 'page-item active' : 'page-item'}">
+						<a th:href="@{/admin-page/userlist(page=${pageNumber}, size=${usersPage.size})}"
+							class="page-link" th:text="${pageNumber + 1}"></a>
+					</li>
+				</th:block>
+				<!-- End iterate over page numbers -->
+				<li th:class="${usersPage.last ? 'page-item disabled' : 'page-item'}">
+					<a th:href="@{/admin-page/userlist(page=${usersPage.number + 1}, size=${usersPage.size})}"
+						class="page-link">Next</a>
+				</li>
+				<li th:class="${usersPage.last ? 'page-item disabled' : 'page-item'}">
+					<a th:href="@{/admin-page/userlist(page=${usersPage.totalPages - 1}, size=${usersPage.size})}"
+						class="page-link">Last</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+	<!-- Back Button -->
+	<div class="row mt-2">
+		<div class="col-md-12">
+			<button onclick="goBack()" class="btn btn-secondary">Go Back</button>
+			<script>
+				function goBack() {
+					window.history.back();
+				}
+			</script>
+		</div>
+	</div>
+	<!-- End Back Button -->
+
+	<footer style="background-color: #eee6d3;">
+		<div class="container p-4 mt-4">
+			<div class="row">
+				<div class="col-lg-6 col-md-16 mb-4">
+					<h5 class="mb-3 text-dark">footer content</h5>
+					<p>
+						Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste atque ea quis
+						molestias. Fugiat pariatur maxime quis culpa corporis vitae repudiandae aliquam
+						voluptatem veniam, est atque cumque eum delectus sint!
+					</p>
+				</div>
+				<div class="col-lg-3 col-md-6 mb-4">
+					<h5 class="mb-3 text-dark">links</h5>
+					<ul class="list-unstyled mb-0">
+						<li class="mb-1">
+							<a href="#!" style="color: #4f4f4f;">FAQ</a>
+						</li>
+						<li class="mb-1">
+							<a href="#!" style="color: #4f4f4f;">Classes</a>
+						</li>
+						<li class="mb-1">
+							<a href="#!" style="color: #4f4f4f;">Pricing</a>
+						</li>
+						<li>
+							<a href="#!" style="color: #4f4f4f;">Safety</a>
+						</li>
+					</ul>
+				</div>
+				<div class="col-lg-3 col-md-6 mb-4">
+					<h5 class="mb-1 text-dark">opening hours</h5>
+					<table class="table" style="border-color: #666;">
+						<tbody>
+							<tr>
+								<td>Mon - Fri:</td>
+								<td>8am - 9pm</td>
+							</tr>
+							<tr>
+								<td>Sat - Sun:</td>
+								<td>8am - 1am</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+			© 2020 Copyright:
+			<a class="text-dark" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+		</div>
+		<!-- Copyright -->
+	</footer>
+
+	<script>
+		// Add event listener to the search input
+		document.getElementById('searchInput').addEventListener('input', function () {
+			const searchText = this.value.toLowerCase();
+			const rows = document.querySelectorAll('#userTableBody tr');
+
+			rows.forEach(row => {
+				let shouldHide = true;
+				// Get the username cell content
+				const usernameCell = row.querySelector('td:nth-child(4)');
+				if (usernameCell) {
+					const usernameText = usernameCell.textContent.toLowerCase();
+					// Check if the username contains the search text
+					if (usernameText.includes(searchText)) {
+						shouldHide = false;
+					}
+				}
+
+				if (shouldHide) {
+					row.style.display = 'none';
+				} else {
+					row.style.display = '';
+				}
+			});
+		});
+	</script>
+
+
+</body>
+
+</html>

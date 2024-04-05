@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<link rel="stylesheet" href="css/home.css" />
+	<link href="https://fonts.googleapis.com/css?family=Montserrat|Roboto&display=swap" rel="stylesheet" />
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+		integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+		integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+
+	<script src="https://kit.fontawesome.com/2e0586df66.js"></script>
+	<title>online Book Store</title>
+</head>
+
+<body>
+	<!-- Top Nav -->
+
+	<!-- <p>Your one stop book shop</p>-->
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="#">
+				<img th:src="@{/images/logo.png}" src="../static/images/logo.png" width="auto" height="40"
+					class="d-inline-block align-top" alt="" />
+				Online Book Store
+			</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+				aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav mr-auto"></ul>
+				<ul class="navbar-nav">
+					<ul class="navbar-nav ml-auto">
+						<li class="nav-item">
+							<a class="nav-link" th:href="@{/}" href="#"><i class="fas fa-home"></i> Home</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" th:href="@{/shop}" href="#"><i class="fas fa-store"></i> Shop</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" th:href="@{/login}" href="#"><i class="fas fa-sign-in-alt"></i>
+								Login</a>
+						</li>
+					</ul>
+					<li class="nav-item">
+						<a class="nav-link" th:href="@{/cart}" href="#">
+							<i class="fas fa-shopping-cart"></i> Cart <!--<span class="badge badge-primary">0</span>-->
+						</a>
+					</li>
+					<li class="nav-item active">
+						<!-- Assuming cartCount is a variable in your model -->
+						<span class="nav-link" th:text="${cartCount}">0</span>
+					</li>
+
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+
+	<!--Hero -->
+	<div class="hero">
+		<div class="overlay">
+			<div class="container">
+				<div class="content">
+					<h1>Welcome to OnlineBook Store </h1>
+					<p>
+						Meet your favorite book, find your reading community, and manage
+						your reading life.
+					</p>
+					<a href="listing.html" class="btn btn-hero">
+						Browse Books
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<main>
+		<div class="book-section-container">
+			<!-- Must Read Books -->
+			<div class="book-section section-a">
+				<h2>Must Read</h2>
+				<div class="card-wraper">
+					<div class="card">
+						<img src="/image/books/a.jpg" alt="Book" srcset="/image/books/a.jpg" />
+						<h3>Giant Days</h3>
+						<p>by John Allison</p>
+						<a class="btn btn-primary" href="detail.html">Read More</a>
+					</div>
+					<div class="card">
+						<img src="/image/books/b.jpg" alt="Book" srcset="/image/books/b.jpg" />
+						<h3>To Be Taught, If Fortunate</h3>
+						<p>by Becky Chambers</p>
+						<a class="btn btn-primary" href="detail.html">Read More</a>
+					</div>
+					<div class="card">
+						<img src="/image/books/c.jpg" alt="Book" srcset="/image/books/c.jpg" />
+						<h3>Bitch Planet</h3>
+						<p>by Kelly Sue DeConnick</p>
+						<a class="btn btn-primary" href="detail.html">Read More</a>
+					</div>
+					<div class="card">
+						<img src="/image/books/d.jpg" alt="Book" srcset="/image/books/d.jpg" />
+						<h3>Paper Girls</h3>
+						<p>by Brian K. Vaughan</p>
+						<a class="btn btn-primary" href="detail.html">Read More</a>
+					</div>
+					<div class="card">
+						<img src="/image/books/e.jpg" alt="Book" srcset="/image/books/e.jpg" />
+						<h3>A Terrible Plan</h3>
+						<p>by Noelle Stevenson, Shannon Watters</p>
+						<a class="btn btn-primary" href="detail.html">Read More</a>
+					</div>
+				</div>
+			</div>
+
+			<!-- Best Selling Books -->
+			<div class="book-section section-b">
+				<h2>Best Selling Books</h2>
+				<div class="card-wraper">
+					<div class="card">
+						<img src="/image/books/a.jpg" alt="Book" srcset="/image/books/a.jpg" />
+						<h3>Giant Days</h3>
+						<p>by John Allison</p>
+						<a class="btn btn-primary" href="detail.html">Read More</a>
+					</div>
+					<div class="card">
+						<img src="/image/books/b.jpg" alt="Book" srcset="/image/books/b.jpg" />
+						<h3>To Be Taught, If Fortunate</h3>
+						<p>by Becky Chambers</p>
+						<a class="btn btn-primary" href="detail.html">Read More</a>
+					</div>
+					<div class="card">
+						<img src="/image/books/c.jpg" alt="Book" srcset="/image/books/c.jpg" />
+						<h3>Bitch Planet</h3>
+						<p>by Kelly Sue DeConnick</p>
+						<a class="btn btn-primary" href="detail.html">Read More</a>
+					</div>
+					<div class="card">
+						<img src="/image/books/d.jpg" alt="Book" srcset="/image/books/d.jpg" />
+						<h3>Paper Girls</h3>
+						<p>by Brian K. Vaughan</p>
+						<a class="btn btn-primary" href="detail.html">Read More</a>
+					</div>
+					<div class="card">
+						<img src="/image/books/e.jpg" alt="Book" srcset="/image/books/e.jpg" />
+						<h3>A Terrible Plan</h3>
+						<p>by Noelle Stevenson, Shannon Watters</p>
+						<a class="btn btn-primary" href="detail.html">Read More</a>
+					</div>
+				</div>
+			</div>
+
+			<!-- Popular This Month Books -->
+			<div class="book-section section-c">
+				<h2>Popular This Month</h2>
+				<div class="card-wraper">
+					<div class="card">
+						<img src="/image/books/a.jpg" alt="Book" srcset="/image/books/a.jpg" />
+						<h3>Giant Days</h3>
+						<p>by John Allison</p>
+						<a class="btn btn-primary" href="detail.html">Read More</a>
+					</div>
+					<div class="card">
+						<img src="/image/books/b.jpg" alt="Book" srcset="/image/books/b.jpg" />
+						<h3>To Be Taught, If Fortunate</h3>
+						<p>by Becky Chambers</p>
+						<a class="btn btn-primary" href="detail.html">Read More</a>
+					</div>
+					<div class="card">
+						<img src="/image/books/c.jpg" alt="Book" srcset="/image/books/c.jpg" />
+						<h3>Bitch Planet</h3>
+						<p>by Kelly Sue DeConnick</p>
+						<a class="btn btn-primary" href="detail.html">Read More</a>
+					</div>
+					<div class="card">
+						<img src="/image/books/d.jpg" alt="Book" srcset="/image/books/d.jpg" />
+						<h3>Paper Girls</h3>
+						<p>by Brian K. Vaughan</p>
+						<a class="btn btn-primary" href="detail.html">Read More</a>
+					</div>
+					<div class="card">
+						<img src="/image/books/e.jpg" alt="Book" srcset="/image/books/e.jpg" />
+						<h3>A Terrible Plan</h3>
+						<p>by Noelle Stevenson, Shannon Watters</p>
+						<a class="btn btn-primary" href="detail.html">Read More</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+
+	<footer style="background-color: #eee6d3;">
+		<div class="container p-4 mt-4">
+			<div class="row">
+				<div class="col-lg-6 col-md-16 mb-4">
+					<h5 class="mb-3 text-dark">footer content</h5>
+					<p>
+						Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste atque ea quis
+						molestias. Fugiat pariatur maxime quis culpa corporis vitae repudiandae aliquam
+						voluptatem veniam, est atque cumque eum delectus sint!
+					</p>
+				</div>
+				<div class="col-lg-3 col-md-6 mb-4">
+					<h5 class="mb-3 text-dark">links</h5>
+					<ul class="list-unstyled mb-0">
+						<li class="mb-1">
+							<a href="#!" style="color: #4f4f4f;">FAQ</a>
+						</li>
+						<li class="mb-1">
+							<a href="#!" style="color: #4f4f4f;">Classes</a>
+						</li>
+						<li class="mb-1">
+							<a href="#!" style="color: #4f4f4f;">Pricing</a>
+						</li>
+						<li>
+							<a href="#!" style="color: #4f4f4f;">Safety</a>
+						</li>
+					</ul>
+				</div>
+				<div class="col-lg-3 col-md-6 mb-4">
+					<h5 class="mb-1 text-dark">opening hours</h5>
+					<table class="table" style="border-color: #666;">
+						<tbody>
+							<tr>
+								<td>Mon - Fri:</td>
+								<td>8am - 9pm</td>
+							</tr>
+							<tr>
+								<td>Sat - Sun:</td>
+								<td>8am - 1am</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+			© 2020 Copyright:
+			<a class="text-dark" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+		</div>
+		<!-- Copyright -->
+	</footer>
+
+</body>
+
+</html>

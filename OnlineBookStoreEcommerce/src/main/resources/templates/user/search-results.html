@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+		integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+		integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+	<title>Search Results</title>
+	<style>
+		.navbar-brand img {
+			height: 40px;
+			margin-right: 10px;
+		}
+
+		.navbar-toggler {
+			padding: 0.25rem 0.5rem;
+			font-size: 1.25rem;
+		}
+
+		.navbar-collapse {
+			justify-content: flex-end;
+		}
+
+		.navbar-nav .nav-link {
+			padding: 0.5rem 1rem;
+		}
+
+		.navbar-nav .nav-link i {
+			margin-right: 5px;
+		}
+
+		.no-results-container {
+			text-align: center;
+			margin-top: 50px;
+			padding: 20px;
+			background-color: #fff;
+			border-radius: 5px;
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+		}
+
+		.no-results-image {
+			max-width: 100%;
+			height: auto;
+			margin-top: 20px;
+		}
+	</style>
+</head>
+
+<body>
+
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<div class="container">
+			<a class="navbar-brand" href="#">
+				<img th:src="@{/images/logo.png}" src="../static/images/logo.png" alt="Logo">
+				Online Book Store
+			</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+				aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item">
+						<a class="nav-link" th:href="@{/}" href="#"><i class="fas fa-home"></i> Home</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" th:href="@{/shop}" href="#"><i class="fas fa-store"></i> Shop</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" th:href="@{/login}" href="#"><i class="fas fa-sign-in-alt"></i> Login</a>
+					</li>
+
+					<li class="nav-item">
+						<a class="nav-link" th:href="@{/cart}" href="#"><i class="fas fa-shopping-cart"></i> Cart <span
+								class="badge badge-primary">0</span></a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<div class="container">
+		<h1 class="mb-4">Search Results</h1>
+
+		<div th:if="${not #lists.isEmpty(books)}" class="row">
+			<!-- Load all books -->
+			<div th:each="book, iterStat : ${books}" class="col-md-3 mb-4">
+				<div class="card h-100">
+					<img class="card-img-top" th:src="@{${'/bookImages/' + book.imageName}}" th:alt="${book.name}">
+					<div class="card-body">
+						<h5 class="card-title" th:text="${book.name}"></h5>
+						<p class="author" th:text="${book.author.name}"></p>
+						<p class="price">₹ <span th:text="${book.price}"></span></p>
+						<a href="/shop/viewbook/1" class="btn btn-primary btn-block view-product-button">View Book</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div th:if="${#lists.isEmpty(books)}" class="no-results-container">
+			<p>No results found.</p>
+			<img th:src="@{/images/no result-found.gif}" src="../static/images/no result-found.gif"
+				class="no-results-image" alt="No Results Found">
+		</div>
+	</div>
+
+	<div class="mt-4">
+		<a href="javascript:history.go(-1)" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Back</a>
+	</div>
+	</div>
+
+	<footer style="background-color: #eee6d3;">
+		<div class="container p-4 mt-4">
+			<div class="row">
+				<div class="col-lg-6 col-md-16 mb-4">
+					<h5 class="mb-3 text-dark">footer content</h5>
+					<p>
+						Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste atque ea quis
+						molestias. Fugiat pariatur maxime quis culpa corporis vitae repudiandae aliquam
+						voluptatem veniam, est atque cumque eum delectus sint!
+					</p>
+				</div>
+				<div class="col-lg-3 col-md-6 mb-4">
+					<h5 class="mb-3 text-dark">links</h5>
+					<ul class="list-unstyled mb-0">
+						<li class="mb-1">
+							<a href="#!" style="color: #4f4f4f;">FAQ</a>
+						</li>
+						<li class="mb-1">
+							<a href="#!" style="color: #4f4f4f;">Classes</a>
+						</li>
+						<li class="mb-1">
+							<a href="#!" style="color: #4f4f4f;">Pricing</a>
+						</li>
+						<li>
+							<a href="#!" style="color: #4f4f4f;">Safety</a>
+						</li>
+					</ul>
+				</div>
+				<div class="col-lg-3 col-md-6 mb-4">
+					<h5 class="mb-1 text-dark">opening hours</h5>
+					<table class="table" style="border-color: #666;">
+						<tbody>
+							<tr>
+								<td>Mon - Fri:</td>
+								<td>8am - 9pm</td>
+							</tr>
+							<tr>
+								<td>Sat - Sun:</td>
+								<td>8am - 1am</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+			© 2020 Copyright:
+			<a class="text-dark" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+		</div>
+		<!-- Copyright -->
+	</footer>
+
+
+	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+		integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+		integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+		crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+		integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+		crossorigin="anonymous"></script>
+</body>
+
+</html>

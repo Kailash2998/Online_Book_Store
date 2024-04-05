@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport"
+		content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Add a new Book</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+		integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+		integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+	<style>
+		.card-header {
+			background-color: #007bff;
+			color: #fff;
+			text-align: center;
+		}
+
+		.card-header h3 {
+			margin-bottom: 0;
+			padding: 20px 0;
+		}
+
+		.card-body label {
+			font-weight: bold;
+		}
+
+		.btn-submit {
+			background-color: #007bff;
+			color: #fff;
+			border-color: #007bff;
+		}
+
+		.btn-submit:hover {
+			background-color: #0056b3;
+			border-color: #0056b3;
+		}
+
+		.btn-back {
+			background-color: #6c757d;
+			color: #fff;
+			border-color: #6c757d;
+		}
+
+		.btn-back:hover {
+			background-color: #5a6268;
+			border-color: #5a6268;
+		}
+	</style>
+</head>
+
+<body>
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="#">
+				<img th:src="@{/images/logo.png}" src="../static/images/logo.png" width="auto" height="40"
+					class="d-inline-block align-top" alt="" />
+				Online Book Store
+			</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+				aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item active">
+						<a class="nav-link" th:href="@{/admin-page}" href="#">Admin Home</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" th:href="@{/logout}" href="#"><i class="fas fa-sign-out-alt"></i>
+							Logout</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<div class="container mt-4">
+		<div class="row justify-content-center">
+			<div class="col-md-8">
+				<div class="card mb-5">
+					<div class="card-header">
+						<h3>Add a new Book</h3>
+					</div>
+					<div class="card-body">
+						<form th:action="@{/admin-page/books/add}" method="post" th:object="${bookDTO}"
+							enctype="multipart/form-data" class="needs-validation" novalidate>
+							<div class="form-group">
+								<label for="name">Title:</label>
+								<input type="text" class="form-control" id="name" th:field="*{name}"
+									placeholder="Enter title" required pattern="[a-zA-Z\s]+" minlength="2"
+									maxlength="100">
+								<div class="invalid-feedback">Please provide a valid title (2-100 characters, no
+									numbers).</div>
+							</div>
+
+							<div class="form-group">
+								<label for="isbn">ISBN:</label>
+								<input type="text" class="form-control" id="isbn" th:field="*{isbn}"
+									placeholder="Enter ISBN" required pattern="[0-9]{13}">
+								<div class="invalid-feedback">Please provide a valid 13-digit ISBN.</div>
+							</div>
+
+							<div class="form-group">
+								<label for="price">Price:</label>
+								<input type="number" class="form-control" id="price" th:field="*{price}"
+									placeholder="Enter price" required min="0.01" step="0.01">
+								<div class="invalid-feedback">Please provide a valid price (greater than 0).</div>
+							</div>
+
+							<div class="form-group">
+								<label for="quantity">Quantity:</label>
+								<input type="number" class="form-control" id="quantity" th:field="*{quantity}"
+									placeholder="Enter quantity" required min="1">
+								<div class="invalid-feedback">Please provide a valid quantity (positive number).</div>
+							</div>
+
+							<div class="form-group">
+								<label for="authorId">Author:</label>
+								<select class="form-control" id="authorId" th:field="*{authorId}" required>
+									<option th:each="author : ${authors}" th:value="${author.id}"
+										th:text="${author.name}"></option>
+								</select>
+								<div class="invalid-feedback">Please select an author.</div>
+							</div>
+
+							<div class="form-group">
+								<label for="categoryId">Category:</label>
+								<select class="form-control" id="categoryId" th:field="*{categoryId}" required>
+									<option th:each="category : ${categories}" th:value="${category.id}"
+										th:text="${category.name}"></option>
+								</select>
+								<div class="invalid-feedback">Please select a category.</div>
+							</div>
+
+							<div class="form-group">
+								<label for="weight">Weight:</label>
+								<input type="number" class="form-control" id="weight" th:field="*{weight}"
+									placeholder="Enter weight" required min="0.01" step="0.01">
+								<div class="invalid-feedback">Please provide a valid weight (greater than 0).</div>
+							</div>
+
+							<div class="form-group">
+								<label for="description">Description:</label>
+								<textarea class="form-control" id="description" th:field="*{description}"
+									placeholder="Enter description" required minlength="10" maxlength="200"
+									pattern="[^\d]*"></textarea>
+								<div class="invalid-feedback">Please provide a valid description (10-200 characters
+									without numbers).</div>
+							</div>
+
+							<div class="form-group">
+								<label for="bookImage">Book Image:</label>
+								<div class="custom-file">
+									<input type="file" class="custom-file-input" id="bookImage" name="bookImage"
+										accept="image/jpeg, image/png" required>
+									<label class="custom-file-label" for="bookImage">Choose file</label>
+									<div class="invalid-feedback">Please choose a valid image file.</div>
+								</div>
+								<div class="form-group">
+									<img src="#" id="imgPreview" height="100px" width="100px"
+										th:src="@{${'/bookImages/' + bookDTO.imageName}}" style="margin-top: 20px"
+										alt=" ">
+								</div>
+								<input type="hidden" name="imgName" th:value="${bookDTO.imageName} ">
+							</div>
+					</div>
+
+					<div class="text-center">
+						<button type="submit" class="btn btn-submit mr-2">Submit</button>
+						<a th:href="@{/admin-page/books}" class="btn btn-back">Back</a>
+					</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+
+	<footer>
+
+		<div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+			© 2020 Copyright:
+		</div>
+	</footer>
+
+	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+		integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+		integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+		crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+		integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+		crossorigin="anonymous"></script>
+
+
+
+	<script>
+		// Example starter JavaScript for disabling form submissions if there are invalid fields
+		(function () {
+			'use strict';
+			window.addEventListener('load', function () {
+				// Fetch all the forms we want to apply custom Bootstrap validation styles to
+				var forms = document.getElementsByClassName('needs-validation');
+				// Loop over them and prevent submission
+				var validation = Array.prototype.filter.call(forms, function (form) {
+					form.addEventListener('submit', function (event) {
+						var bookImage = form.querySelector('[name="bookImage"]');
+						if (bookImage && bookImage.files.length === 0) {
+							// If there are no files selected for the bookImage field, remove validation
+							bookImage.removeAttribute('required');
+						}
+						if (form.checkValidity() === false) {
+							event.preventDefault();
+							event.stopPropagation();
+						}
+						form.classList.add('was-validated');
+					}, false);
+				});
+			}, false);
+		})();
+	</script>
+
+</body>
+
+</html>

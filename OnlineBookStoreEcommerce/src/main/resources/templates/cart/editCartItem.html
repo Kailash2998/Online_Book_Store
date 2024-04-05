@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Edit Cart Item</title>
+	<!-- Add Bootstrap CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+		integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<!-- Add your custom styles here -->
+	<style>
+		/* Add custom styles here if needed */
+	</style>
+</head>
+
+<body class="">
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="#">
+				<img th:src="@{/images/logo.png}" src="../static/images/logo.png" width="auto" height="40"
+					class="d-inline-block align-top" alt="" />
+				Online Book Store
+			</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+				aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav mr-auto"></ul>
+				<ul class="navbar-nav">
+					<li class="nav-item active">
+						<a class="nav-link" th:href="@{/}" href="#">Home</a>
+					</li>
+					<li class="nav-item active">
+						<a class="nav-link" th:href="@{/shop}" href="#">Shop</a>
+					</li>
+					<li class="nav-item active">
+						<a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/login}" href="#">Login</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" th:href="@{/logout}" href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>
+					</li>
+					<li class="nav-item active">
+						<a class="nav-link" th:href="@{/cart}" href="#">Cart</a>
+					</li>
+					<li class="nav-item active">
+						<span class="nav-link" th:text="${cartCount}">0</span>
+					</li>
+				</ul>
+
+			</div>
+		</div>
+	</nav>
+
+	<div class="container mt-5">
+		<h2>Edit Cart Item</h2>
+
+		<form th:action="@{/cart/editItem/{itemId}(itemId=${cartItem.cartItemId})}" method="post">
+			<label for="quantity">Quantity:</label>
+			<input type="number" id="quanity" name="quanity" th:value="${cartItem.quanity}">
+			<button type="submit" class="btn btn-primary"><i class="far fa-edit"></i> Update</button>
+
+		</form>
+		<a href="/cart" onclick="history.back()" class="btn btn-secondary mt-3"><i class="fas fa-arrow-left"></i>
+			Back</a>
+	</div>
+
+	<footer style="background-color: #eee6d3;">
+		<div class="container p-4 mt-4">
+			<div class="row">
+				<div class="col-lg-6 col-md-16 mb-4">
+					<h5 class="mb-3 text-dark">footer content</h5>
+					<p>
+						Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste atque ea quis
+						molestias. Fugiat pariatur maxime quis culpa corporis vitae repudiandae aliquam
+						voluptatem veniam, est atque cumque eum delectus sint!
+					</p>
+				</div>
+				<div class="col-lg-3 col-md-6 mb-4">
+					<h5 class="mb-3 text-dark">links</h5>
+					<ul class="list-unstyled mb-0">
+						<li class="mb-1">
+							<a href="#!" style="color: #4f4f4f;">FAQ</a>
+						</li>
+						<li class="mb-1">
+							<a href="#!" style="color: #4f4f4f;">Classes</a>
+						</li>
+						<li class="mb-1">
+							<a href="#!" style="color: #4f4f4f;">Pricing</a>
+						</li>
+						<li>
+							<a href="#!" style="color: #4f4f4f;">Safety</a>
+						</li>
+					</ul>
+				</div>
+				<div class="col-lg-3 col-md-6 mb-4">
+					<h5 class="mb-1 text-dark">opening hours</h5>
+					<table class="table" style="border-color: #666;">
+						<tbody>
+							<tr>
+								<td>Mon - Fri:</td>
+								<td>8am - 9pm</td>
+							</tr>
+							<tr>
+								<td>Sat - Sun:</td>
+								<td>8am - 1am</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+			© 2020 Copyright:
+			<a class="text-dark" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+		</div>
+		<!-- Copyright -->
+	</footer>
+
+
+</body>
+
+</html>

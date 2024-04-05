@@ -1,0 +1,681 @@
+<!--<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Orders</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+		integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+	<style>
+		.card {
+			width: 80%;
+			margin: 55px auto;
+		}
+
+		.btn-disabled {
+			pointer-events: none;
+			opacity: 0.5;
+		}
+	</style>
+</head>
+
+<body>
+
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="#">
+				Online Book Store
+			</a>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item active">
+						<a class="nav-link" href="#">Admin Home</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<div class="card">
+		<div class="container">
+			<h2>Orders</h2>
+			<div class="row">
+				<div class="col">
+					<p>Total Orders: <span id="orderCount">0</span></p>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<table class="table">
+						<thead class="table-active">
+							<tr>
+								<th>Order ID</th>
+								<th>User</th>
+								<th>Status</th>
+								<th>Actions</th>
+							</tr>
+						</thead>
+						<tbody>
+							 Iterate over each order 
+							<tr th:each="order : ${pagedOrders.content}">
+								<td th:text="${order.id}"></td>
+								<td th:text="${order.user.id}"></td>
+								<td id="orderStatus_${order.id}" th:text="${order.orderStatus}"></td>
+								 Add action buttons or links here, e.g., view details, update status, etc. 
+
+								<td>
+									<div class="">
+										<div class="card-body">
+											<form th:action="@{/admin-page/updateOrderStatus}" method="post">
+												<input type="hidden" th:name="orderId" th:value="${order.id}" />
+												<button type="submit" name="status" value="CANCELLED"
+													class="btn btn-danger"
+													th:disabled="${order.orderStatus == 'CONFIRMED'}">Cancel</button>
+												<button type="submit" name="status" value="CONFIRMED"
+													class="btn btn-success"
+													th:disabled="${order.orderStatus == 'CANCELLED'}">Confirm</button>
+											</form>
+										</div>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	 Pagination 
+	<div class="row mt-2">
+		<div class="col-md-12">
+			<nav aria-label="Page navigation">
+				<ul class="pagination justify-content-center">
+					<li th:class="${currentPage == 0 ? 'page-item disabled' : 'page-item'}">
+						<a th:href="@{/admin-page/updateOrderStatus(page=0)}" class="page-link">First</a>
+					</li>
+					<li th:class="${currentPage == 0 ? 'page-item disabled' : 'page-item'}">
+						<a th:href="@{/admin-page/updateOrderStatus(page=${currentPage - 1})}"
+							class="page-link">Previous</a>
+					</li>
+					<li th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}" class="page-item"
+						th:class="${pageNumber == currentPage ? 'active' : ''}">
+						<a class="page-link" th:href="@{/admin-page/updateOrderStatus?page=__${pageNumber}__}"
+							th:text="${pageNumber + 1}"></a>
+					</li>
+					<li th:class="${currentPage == totalPages - 1 ? 'page-item disabled' : 'page-item'}">
+						<a th:href="@{/admin-page/updateOrderStatus(page=${currentPage + 1})}"
+							class="page-link">Next</a>
+					</li>
+					<li th:class="${currentPage == totalPages - 1 ? 'page-item disabled' : 'page-item'}">
+						<a th:href="@{/admin-page/updateOrderStatus(page=${totalPages - 1})}" class="page-link">Last</a>
+					</li>
+				</ul>
+			</nav>
+
+			 Back Button 
+			<button onclick="goBack()" class="btn btn-secondary">Go Back</button>
+			<script>
+				function goBack() {
+					window.history.back();
+				}
+			</script>
+			 End Back Button 
+		</div>
+	</div>
+	 End Pagination 
+
+	<footer style="background-color: #eee6d3;">
+		<div class="container p-4 mt-4">
+			<div class="row">
+				<div class="col-lg-6 col-md-16 mb-4">
+					<h5 class="mb-3 text-dark">Footer Content</h5>
+					<p>
+						Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste atque ea quis
+						molestias. Fugiat pariatur maxime quis culpa corporis vitae repudiandae aliquam
+						voluptatem veniam, est atque cumque eum delectus sint!
+					</p>
+				</div>
+				<div class="col-lg-3 col-md-6 mb-4">
+					<h5 class="mb-3 text-dark">Links</h5>
+					<ul class="list-unstyled mb-0">
+						<li class="mb-1">
+							<a href="#!" style="color: #4f4f4f;">FAQ</a>
+						</li>
+						<li class="mb-1">
+							<a href="#!" style="color: #4f4f4f;">Classes</a>
+						</li>
+						<li class="mb-1">
+							<a href="#!" style="color: #4f4f4f;">Pricing</a>
+						</li>
+						<li>
+							<a href="#!" style="color: #4f4f4f;">Safety</a>
+						</li>
+					</ul>
+				</div>
+				<div class="col-lg-3 col-md-6 mb-4">
+					<h5 class="mb-1 text-dark">Opening Hours</h5>
+					<table class="table" style="border-color: #666;">
+						<tbody>
+							<tr>
+								<td>Mon - Fri:</td>
+								<td>8am - 9pm</td>
+							</tr>
+							<tr>
+								<td>Sat - Sun:</td>
+								<td>8am - 1am</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+			© 2020 Copyright:
+			<a class="text-dark" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+		</div>
+	</footer>
+
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script>
+		// Function to handle status change button clicks
+		function changeStatus(orderId, newStatus) {
+			// AJAX request to update order status
+			$.ajax({
+				url: '/admin-page/updateOrderStatus',
+				method: 'POST',
+				data: {orderId: orderId, status: newStatus},
+				success: function (response) {
+					// Update status in UI
+					if (response.success) {
+						// Update status for the specific order card
+						var statusElement = $('#orderStatus_' + orderId);
+						if (statusElement) {
+							statusElement.text(newStatus);
+							// Disable buttons based on status
+							if (newStatus === 'Cancelled') {
+								$('.cancelButton[data-order-id="' + orderId + '"]').addClass('btn-disabled');
+								$('.confirmButton[data-order-id="' + orderId + '"]').addClass('btn-disabled');
+							} else if (newStatus === 'Confirmed') {
+								$('.cancelButton[data-order-id="' + orderId + '"]').addClass('btn-disabled');
+							}
+						}
+					} else {
+						console.error(response.message);
+					}
+				},
+				error: function (xhr, status, error) {
+					console.error(error);
+				}
+			});
+		}
+
+		// Event listener for 'Cancel' button
+		$('.cancelButton').click(function () {
+			var orderId = $(this).data('order-id');
+			changeStatus(orderId, 'Cancelled');
+		});
+
+		// Event listener for 'Confirm' button
+		$('.confirmButton').click(function () {
+			var orderId = $(this).data('order-id');
+			changeStatus(orderId, 'Confirmed');
+		});
+
+	</script>
+
+</body>
+
+</html>-->
+
+<!--<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Orders</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+		integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+	<style>
+		.card {
+			width: 80%;
+			margin: 55px auto;
+		}
+
+		.btn-disabled {
+			pointer-events: none;
+			opacity: 0.5;
+		}
+	</style>
+</head>
+
+<body>
+
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="#">
+				Online Book Store
+			</a>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item active">
+						<a class="nav-link" href="#">Admin Home</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<div class="card">
+		<div class="container">
+			<h2>Orders</h2>
+			<div class="row">
+				<div class="col">
+					<p>Total Orders: <span id="orderCount">0</span></p>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<table class="table">
+						<thead class="table-active">
+							<tr>
+								<th>Order ID</th>
+								<th>User</th>
+								<th>Status</th>
+								<th>Actions</th>
+							</tr>
+						</thead>
+						<tbody>
+							 Iterate over each order 
+							<tr th:each="order : ${pagedOrders.content}">
+								<td th:text="${order.id}"></td>
+								<td th:text="${order.user.id}"></td>
+								<td id="orderStatus_${order.id}" th:text="${order.orderStatus}"></td>
+								 Add action buttons or links here, e.g., view details, update status, etc. 
+
+								<td>
+									<div class="">
+										<div class="card-body">
+											<form th:action="@{/admin-page/updateOrderStatus}" method="post">
+												<input type="hidden" th:name="orderId" th:value="${order.id}" />
+												<button type="submit" name="status" value="CANCELLED"
+													class="btn btn-danger cancelButton"
+													th:disabled="${order.orderStatus == 'CONFIRMED'}">Cancel</button>
+												<button type="submit" name="status" value="CONFIRMED"
+													class="btn btn-success confirmButton"
+													th:disabled="${order.orderStatus == 'CANCELLED'}">Confirm</button>
+											</form>
+										</div>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	 Pagination 
+	<div class="row mt-2">
+		<div class="col-md-12">
+			<nav aria-label="Page navigation">
+				<ul class="pagination justify-content-center">
+					<li th:class="${currentPage == 0 ? 'page-item disabled' : 'page-item'}">
+						<a th:href="@{/admin-page/updateOrderStatus(page=0)}" class="page-link">First</a>
+					</li>
+					<li th:class="${currentPage == 0 ? 'page-item disabled' : 'page-item'}">
+						<a th:href="@{/admin-page/updateOrderStatus(page=${currentPage - 1})}"
+							class="page-link">Previous</a>
+					</li>
+					<li th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}" class="page-item"
+						th:class="${pageNumber == currentPage ? 'active' : ''}">
+						<a class="page-link" th:href="@{/admin-page/updateOrderStatus?page=__${pageNumber}__}"
+							th:text="${pageNumber + 1}"></a>
+					</li>
+					<li th:class="${currentPage == totalPages - 1 ? 'page-item disabled' : 'page-item'}">
+						<a th:href="@{/admin-page/updateOrderStatus(page=${currentPage + 1})}"
+							class="page-link">Next</a>
+					</li>
+					<li th:class="${currentPage == totalPages - 1 ? 'page-item disabled' : 'page-item'}">
+						<a th:href="@{/admin-page/updateOrderStatus(page=${totalPages - 1})}" class="page-link">Last</a>
+					</li>
+				</ul>
+			</nav>
+
+			 Back Button 
+			<button onclick="goBack()" class="btn btn-secondary">Go Back</button>
+			<script>
+				function goBack() {
+					window.history.back();
+				}
+			</script>
+			 End Back Button 
+		</div>
+	</div>
+	 End Pagination 
+
+	<footer style="background-color: #eee6d3;">
+		<div class="container p-4 mt-4">
+			<div class="row">
+				<div class="col-lg-6 col-md-16 mb-4">
+					<h5 class="mb-3 text-dark">Footer Content</h5>
+					<p>
+						Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste atque ea quis
+						molestias. Fugiat pariatur maxime quis culpa corporis vitae repudiandae aliquam
+						voluptatem veniam, est atque cumque eum delectus sint!
+					</p>
+				</div>
+				<div class="col-lg-3 col-md-6 mb-4">
+					<h5 class="mb-3 text-dark">Links</h5>
+					<ul class="list-unstyled mb-0">
+						<li class="mb-1">
+							<a href="#!" style="color: #4f4f4f;">FAQ</a>
+						</li>
+						<li class="mb-1">
+							<a href="#!" style="color: #4f4f4f;">Classes</a>
+						</li>
+						<li class="mb-1">
+							<a href="#!" style="color: #4f4f4f;">Pricing</a>
+						</li>
+						<li>
+							<a href="#!" style="color: #4f4f4f;">Safety</a>
+						</li>
+					</ul>
+				</div>
+				<div class="col-lg-3 col-md-6 mb-4">
+					<h5 class="mb-1 text-dark">Opening Hours</h5>
+					<table class="table" style="border-color: #666;">
+						<tbody>
+							<tr>
+								<td>Mon - Fri:</td>
+								<td>8am - 9pm</td>
+							</tr>
+							<tr>
+								<td>Sat - Sun:</td>
+								<td>8am - 1am</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+			© 2020 Copyright:
+			<a class="text-dark" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+		</div>
+	</footer>
+
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+	<script>
+		// Function to handle status change button clicks
+		function changeStatus(orderId, newStatus) {
+			// AJAX request to update order status
+			$.ajax({
+				url: '/admin-page/updateOrderStatus',
+				method: 'POST',
+				data: {orderId: orderId, status: newStatus},
+				success: function (response) {
+					// Update status in UI
+					if (response.success) {
+						// Update status for the specific order card
+						var statusElement = $('#orderStatus_' + orderId);
+						if (statusElement) {
+							statusElement.text(newStatus);
+							// Disable buttons based on status
+							if (newStatus === 'Cancelled') {
+								$('.cancelButton[data-order-id="' + orderId + '"]').addClass('btn-disabled').prop('disabled', true);
+								$('.confirmButton[data-order-id="' + orderId + '"]').removeClass('btn-disabled').prop('disabled', false);
+							} else if (newStatus === 'Confirmed') {
+								$('.cancelButton[data-order-id="' + orderId + '"]').removeClass('btn-disabled').prop('disabled', false);
+								$('.confirmButton[data-order-id="' + orderId + '"]').addClass('btn-disabled').prop('disabled', true);
+							}
+						}
+					} else {
+						console.error(response.message);
+					}
+				},
+				error: function (xhr, status, error) {
+					console.error(error);
+				}
+			});
+		}
+
+		// Event listener for 'Cancel' button
+		$('.cancelButton').click(function (e) {
+			e.preventDefault();
+			var orderId = $(this).data('order-id');
+			changeStatus(orderId, 'Cancelled');
+			$(this).prop('disabled', true);
+			$('.confirmButton[data-order-id="' + orderId + '"]').prop('disabled', true);
+		});
+
+		// Event listener for 'Confirm' button
+		$('.confirmButton').click(function (e) {
+			e.preventDefault();
+			var orderId = $(this).data('order-id');
+			changeStatus(orderId, 'Confirmed');
+			$(this).prop('disabled', true);
+			$('.cancelButton[data-order-id="' + orderId + '"]').prop('disabled', true);
+		});
+
+		// Initial disable logic based on status
+		$(document).ready(function () {
+			$('.cancelButton, .confirmButton').each(function () {
+				var orderId = $(this).data('order-id');
+				var status = $('#orderStatus_' + orderId).text();
+				if (status === 'Confirmed' || status === 'Cancelled') {
+					$(this).prop('disabled', true);
+				}
+			});
+		});
+	</script>
+
+
+</body>
+
+</html>-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Orders</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+		integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+	<style>
+		.card {
+			width: 80%;
+			margin: 55px auto;
+		}
+
+		.btn-disabled {
+			pointer-events: none;
+			opacity: 0.5;
+		}
+	</style>
+</head>
+
+<body>
+
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="#">
+				Online Book Store
+			</a>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item active">
+						<a class="nav-link" href="#">Admin Home</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" th:href="@{/logout}" href="#"><i class="fas fa-sign-out-alt"></i>
+							Logout</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<div class="card">
+		<div class="container">
+			<h2>Orders</h2>
+			<div class="row">
+				<div class="col">
+					<p>Total Orders: <span th:text="${orderCount}"></span></p>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<table class="table">
+						<thead class="table-active">
+							<tr>
+								<th>Order ID</th>
+								<th>User</th>
+								<th>Status</th>
+								<th>Actions</th>
+							</tr>
+						</thead>
+						<tbody>
+							<!-- Iterate over each order -->
+							<tr th:each="order : ${pagedOrders.content}">
+								<td th:text="${order.id}"></td>
+								<td th:text="${order.user.id}"></td>
+								<td id="orderStatus_${order.id}" th:text="${order.orderStatus}"></td>
+								<!-- Add action buttons or links here, e.g., view details, update status, etc. -->
+
+								<td>
+									<div class="">
+										<div class="card-body">
+											<form th:action="@{/admin-page/updateOrderStatus}" method="post">
+												<input type="hidden" th:name="orderId" th:value="${order.id}" />
+												<button type="submit" id="but1" name="status" value="CANCELLED"
+													class="btn btn-danger cancelButton"
+													th:disabled="${order.orderStatus == 'CONFIRMED'}">Cancel</button>
+												<button type="submit" name="status" value="CONFIRMED"
+													class="btn btn-success confirmButton"
+													th:disabled="${order.orderStatus == 'CANCELLED'}">Confirm</button>
+											</form>
+										</div>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Pagination -->
+	<div class="row mt-2">
+		<div class="col-md-12">
+			<nav aria-label="Page navigation">
+				<ul class="pagination justify-content-center">
+					<li th:class="${currentPage == 0 ? 'page-item disabled' : 'page-item'}">
+						<a th:href="@{/admin-page/updateOrderStatus(page=0)}" class="page-link">First</a>
+					</li>
+					<li th:class="${currentPage == 0 ? 'page-item disabled' : 'page-item'}">
+						<a th:href="@{/admin-page/updateOrderStatus(page=${currentPage - 1})}"
+							class="page-link">Previous</a>
+					</li>
+					<li th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}" class="page-item"
+						th:class="${pageNumber == currentPage ? 'active' : ''}">
+						<a class="page-link" th:href="@{/admin-page/updateOrderStatus?page=__${pageNumber}__}"
+							th:text="${pageNumber + 1}"></a>
+					</li>
+					<li th:class="${currentPage == totalPages - 1 ? 'page-item disabled' : 'page-item'}">
+						<a th:href="@{/admin-page/updateOrderStatus(page=${currentPage + 1})}"
+							class="page-link">Next</a>
+					</li>
+					<li th:class="${currentPage == totalPages - 1 ? 'page-item disabled' : 'page-item'}">
+						<a th:href="@{/admin-page/updateOrderStatus(page=${totalPages - 1})}" class="page-link">Last</a>
+					</li>
+				</ul>
+			</nav>
+
+			<!-- Back Button -->
+			<button onclick="goBack()" class="btn btn-secondary">Go Back</button>
+			<script>
+				function goBack() {
+					window.history.back();
+				}
+			</script>
+			<!-- End Back Button -->
+		</div>
+	</div>
+	<!-- End Pagination -->
+
+	<footer style="background-color: #eee6d3;">
+		<div class="container p-4 mt-4">
+			<div class="row">
+				<div class="col-lg-6 col-md-16 mb-4">
+					<h5 class="mb-3 text-dark">Footer Content</h5>
+					<p>
+						Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste atque ea quis
+						molestias. Fugiat pariatur maxime quis culpa corporis vitae repudiandae aliquam
+						voluptatem veniam, est atque cumque eum delectus sint!
+					</p>
+				</div>
+				<div class="col-lg-3 col-md-6 mb-4">
+					<h5 class="mb-3 text-dark">Links</h5>
+					<ul class="list-unstyled mb-0">
+						<li class="mb-1">
+							<a href="#!" style="color: #4f4f4f;">FAQ</a>
+						</li>
+						<li class="mb-1">
+							<a href="#!" style="color: #4f4f4f;">Classes</a>
+						</li>
+						<li class="mb-1">
+							<a href="#!" style="color: #4f4f4f;">Pricing</a>
+						</li>
+						<li>
+							<a href="#!" style="color: #4f4f4f;">Safety</a>
+						</li>
+					</ul>
+				</div>
+				<div class="col-lg-3 col-md-6 mb-4">
+					<h5 class="mb-1 text-dark">Opening Hours</h5>
+					<table class="table" style="border-color: #666;">
+						<tbody>
+							<tr>
+								<td>Mon - Fri:</td>
+								<td>8am - 9pm</td>
+							</tr>
+							<tr>
+								<td>Sat - Sun:</td>
+								<td>8am - 1am</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+			© 2020 Copyright:
+			<a class="text-dark" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+		</div>
+	</footer>
+
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+</body>
+
+</html>

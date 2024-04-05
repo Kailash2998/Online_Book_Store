@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Order History</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+		integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+		integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+	<style>
+		.order-card {
+			margin-bottom: 20px;
+		}
+
+		.card {
+			height: 300px;
+			width: 250px;
+		}
+
+		.box {
+			margin-top: 60px;
+		}
+	</style>
+</head>
+
+<body>
+
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="#">
+				<img th:src="@{/images/logo.png}" src="../static/images/logo.png" width="auto" height="40"
+					class="d-inline-block align-top" alt="" />
+				Online Book Store
+			</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+				aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav mr-auto"></ul>
+				<ul class="navbar-nav">
+					<li class="nav-item active">
+						<a class="nav-link" th:href="@{/admin-page}" href="#">admin-home</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" th:href="@{/logout}" href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<div class="container">
+		<div class="box">
+			<h1>Order History</h1>
+
+			<!-- Add search input and button -->
+			<div class="row">
+				<div class="col-md-6">
+					<div class="input-group mb-3">
+						<input type="text" class="form-control" placeholder="Search by Order ID" id="searchInput">
+						<div class="input-group-append">
+							<button class="btn btn-outline-secondary" type="button"
+								onclick="searchOrder()">Search</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Display search results -->
+			<div class="row" id="searchResults" style="display: none;">
+				<div class="col-md-12">
+					<h2>Search Results</h2>
+					<div id="searchResultsContent"></div>
+				</div>
+			</div>
+
+			<!-- Iterate over each order in the pagedOrders list -->
+			<div class="row">
+				<div th:each="order : ${pagedOrders.content}" class="col-md-3 order-card">
+					<div class="card">
+						<div class="card-body">
+							<h5 class="card-title">Order ID: <span th:text="${order.id}">Order ID</span></h5>
+							<p class="card-text">Receiver Name: <span th:text="${order.receiverName}">Receiver
+									Name</span></p>
+							<p class="card-text">Shipping Address: <span th:text="${order.shippingAddress}">Shipping
+									Address</span></p>
+							<p class="card-text">Phone Number: <span th:text="${order.phoneNumber}">Phone Number</span>
+							</p>
+							<p class="card-text">Pin Code: <span th:text="${order.pinCode}">Pin Code</span></p>
+							<p class="card-text">Order Status: <span th:text="${order.orderStatus}">Order Status</span>
+							</p>
+							<!-- Add more fields as needed -->
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Pagination -->
+			<nav aria-label="Page navigation">
+				<ul class="pagination justify-content-center">
+					<li th:class="${currentPage == 0 ? 'page-item disabled' : 'page-item'}">
+						<a th:href="@{/admin-page/orderhistory(page=0)}" class="page-link">First</a>
+					</li>
+					<li th:class="${currentPage == 0 ? 'page-item disabled' : 'page-item'}">
+						<a th:href="@{/admin-page/orderhistory(page=${currentPage - 1})}" class="page-link">Previous</a>
+					</li>
+
+					<li th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}" class="page-item"
+						th:class="${pageNumber == currentPage ? 'active' : ''}">
+						<a class="page-link" th:href="@{/admin-page/orderhistory?page=__${pageNumber}__}"
+							th:text="${pageNumber + 1}"></a>
+					</li>
+					<li th:class="${currentPage == totalPages - 1 ? 'page-item disabled' : 'page-item'}">
+						<a th:href="@{/admin-page/orderhistory(page=${currentPage + 1})}" class="page-link">Next</a>
+					</li>
+					<li th:class="${currentPage == totalPages - 1 ? 'page-item disabled' : 'page-item'}">
+						<a th:href="@{/admin-page/orderhistory(page=${totalPages - 1})}" class="page-link">Last</a>
+					</li>
+				</ul>
+			</nav>
+			<!-- End Pagination -->
+
+			<!-- Back Button -->
+			<button onclick="goBack()" class="btn btn-secondary">Go Back</button>
+			<script>
+				function goBack() {
+					window.history.back();
+				}
+			</script>
+			<!-- End Back Button -->
+
+		</div>
+	</div>
+
+	<footer style="background-color: #eee6d3;">
+		<div class="container p-4 mt-4">
+			<div class="row">
+				<div class="col-lg-6 col-md-16 mb-4">
+					<h5 class="mb-3 text-dark">footer content</h5>
+					<p>
+						Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste atque ea quis
+						molestias. Fugiat pariatur maxime quis culpa corporis vitae repudiandae aliquam
+						voluptatem veniam, est atque cumque eum delectus sint!
+					</p>
+				</div>
+				<div class="col-lg-3 col-md-6 mb-4">
+					<h5 class="mb-3 text-dark">links</h5>
+					<ul class="list-unstyled mb-0">
+						<li class="mb-1">
+							<a href="#!" style="color: #4f4f4f;">FAQ</a>
+						</li>
+						<li class="mb-1">
+							<a href="#!" style="color: #4f4f4f;">Classes</a>
+						</li>
+						<li class="mb-1">
+							<a href="#!" style="color: #4f4f4f;">Pricing</a>
+						</li>
+						<li>
+							<a href="#!" style="color: #4f4f4f;">Safety</a>
+						</li>
+					</ul>
+				</div>
+				<div class="col-lg-3 col-md-6 mb-4">
+					<h5 class="mb-1 text-dark">opening hours</h5>
+					<table class="table" style="border-color: #666;">
+						<tbody>
+							<tr>
+								<td>Mon - Fri:</td>
+								<td>8am - 9pm</td>
+							</tr>
+							<tr>
+								<td>Sat - Sun:</td>
+								<td>8am - 1am</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+			© 2020 Copyright:
+			<a class="text-dark" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+		</div>
+		<!-- Copyright -->
+	</footer>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script>
+		function searchOrder() {
+			var orderId = document.getElementById('searchInput').value;
+			if (orderId.trim() !== '') {
+				// AJAX request to search for order
+				$.ajax({
+					url: '/search-order',
+					method: 'GET',
+					data: {orderId: orderId},
+					success: function (response) {
+						displaySearchResults(response);
+					},
+					error: function (xhr, status, error) {
+						console.error(error);
+					}
+				});
+			}
+		}
+
+		function displaySearchResults(results) {
+			var searchResultsContent = document.getElementById('searchResultsContent');
+			searchResultsContent.innerHTML = ''; // Clear previous results
+			if (results.length > 0) {
+				results.forEach(function (order) {
+					var orderCard = `
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Order ID: ${order.id}</h5>
+                                <p class="card-text">Receiver Name: ${order.receiverName}</p>
+                                <p class="card-text">Shipping Address: ${order.shippingAddress}</p>
+                                <p class="card-text">Phone Number: ${order.phoneNumber}</p>
+                                <p class="card-text">Pin Code: ${order.pinCode}</p>
+                                <p class="card-text">Order Status: ${order.orderStatus}</p>
+                            </div>
+                        </div>
+                    `;
+					searchResultsContent.innerHTML += orderCard;
+				});
+				document.getElementById('searchResults').style.display = 'block'; // Show search results
+			} else {
+				searchResultsContent.innerHTML = '<p>No results found.</p>';
+			}
+		}
+	</script>
+</body>
+
+</html>
